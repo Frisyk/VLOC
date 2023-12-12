@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/register"
-        android:contentDescription="@string/story_photo" />
+        android:contentDescription="@string/destination_photo" />
 
     <TextView
         android:id="@+id/titleTextView"

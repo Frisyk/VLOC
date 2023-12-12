@@ -10,10 +10,10 @@ import bangkit.capstone.vloc.data.model.ListDestinationItem
 @Dao
 interface VLocDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertDestination(destination: List<ListDestinationItem>)
+    suspend fun insertStory(destination: List<ListDestinationItem>)
 
     @Query("SELECT * FROM destination")
-    fun getAllDestination(): PagingSource<Int, ListDestinationItem>
+    fun getAllStory(): PagingSource<Int, ListDestinationItem>
 
     @Query("DELETE FROM destination")
     suspend fun deleteAll()

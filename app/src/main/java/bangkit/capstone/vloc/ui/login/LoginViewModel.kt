@@ -28,8 +28,9 @@ class LoginViewModel(private val repository: VlocRepository) : ViewModel() {
                 _isLoading.value = true
                 val successResponse = repository.postLogin(user)
                 val email = user.email
+                val name = successResponse.loginResult.name
                 val token = successResponse.loginResult.token
-                val userSession = UserModel(email, token, true)
+                val userSession = UserModel(name, email, token, true)
                 repository.saveSession(userSession)
                 _response.value = successResponse
             } catch (e: HttpException) {

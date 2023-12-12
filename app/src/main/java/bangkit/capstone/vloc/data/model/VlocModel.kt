@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 import retrofit2.http.Field
 
 data class UserModel(
+    val name: String,
     val email: String,
     val token: String,
     val isLogin: Boolean = false
@@ -60,10 +61,10 @@ data class RegisterRequest (
     val password: String
 )
 
-data class DestinationResponse(
+data class StoryResponse(
 
-    @field:SerializedName("listDestination")
-    val listDestination: List<ListDestinationItem>,
+    @field:SerializedName("listStory")
+    val listStory: List<ListDestinationItem>,
 
     @field:SerializedName("error")
     val error: Boolean,

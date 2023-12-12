@@ -9,23 +9,27 @@
         android:id="@+id/navigation_home"
         android:name="bangkit.capstone.vloc.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_details2"
+            app:destination="@id/navigation_details" />
+    </fragment>
 
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_dashboard"-->
-<!--        android:name="com.dicoding.mybottomnavigation.ui.dashboard.DashboardFragment"-->
-<!--        android:label="@string/title_dashboard"-->
-<!--        tools:layout="@layout/fragment_dashboard" />-->
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="bangkit.capstone.vloc.ui.search.SearchFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_search" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_notifications"-->
-<!--        android:name="com.dicoding.mybottomnavigation.ui.notifications.NotificationsFragment"-->
-<!--        android:label="@string/title_notifications"-->
-<!--        tools:layout="@layout/fragment_notifications" />-->
+    <fragment
+        android:id="@+id/navigation_details"
+        android:name="bangkit.capstone.vloc.ui.details.DetailsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_details" />
 
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_profile"-->
-<!--        android:name="com.dicoding.mybottomnavigation.ProfileFragment"-->
-<!--        android:label="@string/title_profile"-->
-<!--        tools:layout="@layout/fragment_profile"/>-->
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="bangkit.capstone.vloc.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile"/>
 </navigation>

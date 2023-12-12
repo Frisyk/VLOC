@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         ViewModelFactory.getInstance(this)
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         val appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.navigation_home
+            R.id.navigation_home, R.id.navigation_profile, R.id.navigation_search, R.id.navigation_details
 //            R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_profile
         ).build()
 
@@ -47,14 +48,16 @@ class MainActivity : AppCompatActivity() {
                 finish()
             } else {
                 findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_home)
-                // Tambahkan kode yang diperlukan untuk pengguna yang sudah login
             }
         }
     }
+
+//    override fun onSupportNavigateUp(): Boolean {
+//        return navController.navigateUp() || super.onSupportNavigateUp()
+//    }
 
     private fun showToast() {
         Toast.makeText(this, R.string.failed_message, Toast.LENGTH_SHORT).show()
     }
 
-    // Tambahkan fungsi dan metode lain yang Anda perlukan
 }

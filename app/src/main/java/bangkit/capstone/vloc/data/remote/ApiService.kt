@@ -1,10 +1,11 @@
 package bangkit.capstone.vloc.data.remote
 
-import bangkit.capstone.vloc.data.model.DestinationResponse
+import bangkit.capstone.vloc.data.model.StoryResponse
 import bangkit.capstone.vloc.data.model.LoginRequest
 import bangkit.capstone.vloc.data.model.LoginResponse
 import bangkit.capstone.vloc.data.model.PostResponse
 import bangkit.capstone.vloc.data.model.RegisterRequest
+//import bangkit.capstone.vloc.data.model.StoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -26,17 +27,24 @@ interface ApiService {
         @Body user: LoginRequest
     ): LoginResponse
 
+//    @GET("stories")
+//    suspend fun getStory(
+//        @Header("Authorization") token: String,
+//        @Query("page") page: Int = 1,
+//        @Query("size") size: Int = 20
+//    ): StoryResponse
+
     @GET("stories")
-    suspend fun getDestination(
+    suspend fun getStory(
         @Header("Authorization") token: String,
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 20
-    ): DestinationResponse
+    ): StoryResponse
 
     @GET("stories")
     suspend fun getDatas(
         @Header("Authorization") token: String
-    ) : DestinationResponse
+    ) : StoryResponse
 
     @Multipart
     @POST("stories")

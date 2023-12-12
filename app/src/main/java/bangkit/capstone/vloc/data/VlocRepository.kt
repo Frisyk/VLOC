@@ -8,8 +8,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
 import bangkit.capstone.vloc.data.local.database.VlocDatabase
+//import bangkit.capstone.vloc.data.local.database.VlocDatabase
 import bangkit.capstone.vloc.data.local.pref.UserPreference
-import bangkit.capstone.vloc.data.model.DestinationResponse
+import bangkit.capstone.vloc.data.model.StoryResponse
 import bangkit.capstone.vloc.data.model.ListDestinationItem
 import bangkit.capstone.vloc.data.model.LoginRequest
 import bangkit.capstone.vloc.data.model.LoginResponse
@@ -17,13 +18,15 @@ import bangkit.capstone.vloc.data.model.PostResponse
 import bangkit.capstone.vloc.data.model.RegisterRequest
 import bangkit.capstone.vloc.data.model.UserModel
 import bangkit.capstone.vloc.data.paging.VlocRemoteMediator
+//import bangkit.capstone.vloc.data.paging.VlocRemoteMediator
 import bangkit.capstone.vloc.data.remote.ApiService
 import kotlinx.coroutines.flow.Flow
 
 class VlocRepository private constructor(
     private val userPreference: UserPreference,
     private val apiService: ApiService,
-    private val vlocDatabase: VlocDatabase
+    private val vlocDatabase: VlocDatabase,
+//    private val destinationDatabase: StoryDatabase
 ) {
 
     // pref session login
@@ -49,7 +52,6 @@ class VlocRepository private constructor(
 
     // database
     fun getDestination(token: String): LiveData<PagingData<ListDestinationItem>> {
-        Log.d("adadaddada", token.toString())
 
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
@@ -59,15 +61,24 @@ class VlocRepository private constructor(
             remoteMediator = VlocRemoteMediator(vlocDatabase, apiService, token),
             pagingSourceFactory = {
 //                StoryPagingSource(token, apiService)
-                vlocDatabase.vlocDao().getAllDestination()
+                vlocDatabase.vlocDao().getAllStory()
             }
         ).liveData
     }
 
-    suspend fun getDataSource(token: String): DestinationResponse {
-        return apiService.getDatas(token)
-    }
-
+//    fun getStories(token: String): LiveData<PagingData<ListDestinationItem>> {
+//        @OptIn(ExperimentalPagingApi::class)
+//        return Pager(
+//            config = PagingConfig(
+//                pageSize = 5
+//            ),
+//            remoteMediator = StoryRemoteMediator(destinationDatabase, apiService, token),
+//            pagingSourceFactory = {
+////                StoryPagingSource(token, apiService)
+//                destinationDatabase.destinationDao().getAllStory()
+//            }
+//        ).liveData
+//    }
 
     companion object {
         @Volatile

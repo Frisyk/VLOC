@@ -8,6 +8,7 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import bangkit.capstone.vloc.data.local.database.RemoteKeys
 import bangkit.capstone.vloc.data.local.database.VlocDatabase
+//import bangkit.capstone.vloc.data.local.database.VlocDatabase
 import bangkit.capstone.vloc.data.model.ListDestinationItem
 import bangkit.capstone.vloc.data.remote.ApiService
 
@@ -50,9 +51,9 @@ class VlocRemoteMediator(
 
         Log.d("resumee", state.firstItemOrNull().toString())
         try {
-            val responseData = apiService.getDestination( token, page, state.config.pageSize)
-            Log.d("dataaaa", responseData.listDestination.toString())
-            val endOfPaginationReached = responseData.listDestination.isEmpty()
+            val responseData = apiService.getStory( token, page, state.config.pageSize)
+            Log.d("dataaaa", responseData.listStory.toString())
+            val endOfPaginationReached = responseData.listStory.isEmpty()
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     database.remoteKeysDao().deleteRemoteKeys()
@@ -60,12 +61,12 @@ class VlocRemoteMediator(
                 }
                 val prevKey = if (page == 1) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
-                val keys = responseData.listDestination.map {
+                val keys = responseData.listStory.map {
                     RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
 
                 database.remoteKeysDao().insertAll(keys)
-                database.vlocDao().insertDestination(responseData.listDestination)
+                database.vlocDao().insertStory(responseData.listStory)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {

@@ -2,33 +2,46 @@ package bangkit.capstone.vloc.ui.home
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.os.bundleOf
 import androidx.core.util.Pair
+import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import bangkit.capstone.vloc.R
 import bangkit.capstone.vloc.data.model.ListDestinationItem
 import bangkit.capstone.vloc.databinding.DestinationItemBinding
+import bangkit.capstone.vloc.ui.details.DetailsFragment
+//import bangkit.capstone.vloc.data.model.ListDestinationItem
+//import bangkit.capstone.vloc.databinding.DestinationItemBinding
 import com.bumptech.glide.Glide
 
 
 class DestinationAdapter : PagingDataAdapter<ListDestinationItem, DestinationAdapter.MyViewHolder>(DIFF_CALLBACK) {
-
     class MyViewHolder(private val binding: DestinationItemBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(story: ListDestinationItem) {
-           binding.tvItemName.text = story.name.uppercase()
-            binding.tvItemDescription.text = story.description
+        fun bind(destination: ListDestinationItem) {
+           binding.tvItemName.text = destination.name.uppercase()
+            binding.tvItemDescription.text = destination.description
             Glide.with(itemView.context)
-                .load(story.photoUrl)
+                .load(destination.photoUrl)
                 .into(binding.imgItemPhoto)
+
+            itemView.setOnClickListener {
+                val bundle = bundleOf("destinationId" to destination.id)
+                it.findNavController().navigate(R.id.navigation_details, bundle)
+            }
+
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -37,9 +50,9 @@ class DestinationAdapter : PagingDataAdapter<ListDestinationItem, DestinationAda
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val story = getItem(position)
-        if (story != null) {
-            holder.bind(story)
+        val destination = getItem(position)
+        if (destination != null) {
+            holder.bind(destination)
         }
     }
 
