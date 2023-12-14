@@ -1,18 +1,26 @@
 package bangkit.capstone.vloc.ui.details
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import bangkit.capstone.vloc.R
 import bangkit.capstone.vloc.ViewModelFactory
 import bangkit.capstone.vloc.databinding.FragmentDetailsBinding
 import bangkit.capstone.vloc.databinding.FragmentHomeBinding
-import bangkit.capstone.vloc.ui.home.MainViewModel
+import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.launch
 
 class DetailsFragment : Fragment() {
 
@@ -22,21 +30,48 @@ class DetailsFragment : Fragment() {
     private val viewModel by viewModels<DetailsViewModel> {
         ViewModelFactory.getInstance(requireContext())
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         val destinationId = arguments?.getString("destinationId")
 
-        binding?.textDetails?.text = destinationId.toString()
+        viewModel.getSession().observe(viewLifecycleOwner) {
+            if (it != null) {
+                val token = it.token
+                lifecycleScope.launch {
+                    viewModel.getDetails("Bearer $token", destinationId)
+                }            }
+        }
 
-        return inflater.inflate(R.layout.fragment_details, container, false)
+
+
+        viewModel.destination.observe(viewLifecycleOwner) { response ->
+            Log.d("resssss", response?.story.toString())
+                binding?.tvdetail?.text = response?.story?.description
+                binding?.tvname?.text = response?.story?.name
+                binding?.ivdetail?.let { imageView ->
+                    Glide.with(imageView)
+                        .load(response?.story?.photoUrl)
+                        .into(imageView)
+                }
+        }
+        return binding?.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
     }
 
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

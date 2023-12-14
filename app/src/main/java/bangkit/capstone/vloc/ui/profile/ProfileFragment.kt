@@ -1,28 +1,29 @@
-package bangkit.capstone.vloc.ui.home
+package bangkit.capstone.vloc.ui.profile
 
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import bangkit.capstone.vloc.R
 import bangkit.capstone.vloc.ViewModelFactory
 import bangkit.capstone.vloc.databinding.FragmentHomeBinding
+import bangkit.capstone.vloc.databinding.FragmentProfileBinding
+import bangkit.capstone.vloc.ui.home.DestinationAdapter
+import bangkit.capstone.vloc.ui.home.LoadingAdapter
+import bangkit.capstone.vloc.ui.home.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
+class ProfileFragment : Fragment() {
+
+    private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding
 
-    private val viewModel by viewModels<MainViewModel> {
+    private val viewModel by viewModels<ProfileViewModel> {
         ViewModelFactory.getInstance(requireContext())
     }
 
@@ -30,21 +31,15 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+        _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
         val layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         binding?.rvDestination?.layoutManager = layoutManager
 
-        viewModel.isLoading.observe(viewLifecycleOwner) {
-            showLoading(it)
-        }
+        return binding?.root
+    }
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            showExitConfirmationDialog()
-        }
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
             val token = user.token
             val adapter = DestinationAdapter()
@@ -53,6 +48,7 @@ class HomeFragment : Fragment() {
                     adapter.retry()
                 }
             )
+            binding?.nameProfile?.text = user.name
             viewModel.getAllStory("Bearer $token")?.observe(viewLifecycleOwner) { response ->
                 if (response != null) {
                     adapter.submitData(lifecycle, response)
@@ -62,37 +58,14 @@ class HomeFragment : Fragment() {
             }
 
         }
-
-        return binding?.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun showExitConfirmationDialog() {
-        AlertDialog.Builder(requireContext())
-            .setMessage("Apakah Anda yakin ingin keluar?")
-            .setPositiveButton("Ya") { _, _ ->
-                requireActivity().finish()
-            }
-            .setNegativeButton("Tidak", null)
-            .show()
-    }
     private fun showSnackbar(message: String) {
         Snackbar.make(
             requireView(),
             message,
             Snackbar.LENGTH_SHORT
         ).show()
-    }
-
-
-    private fun showLoading(isLoading: Boolean) {
-        binding?.loadingBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -1,5 +1,6 @@
 package bangkit.capstone.vloc.data.remote
 
+import bangkit.capstone.vloc.data.model.DetailsResponse
 import bangkit.capstone.vloc.data.model.StoryResponse
 import bangkit.capstone.vloc.data.model.LoginRequest
 import bangkit.capstone.vloc.data.model.LoginResponse
@@ -14,6 +15,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -27,12 +29,12 @@ interface ApiService {
         @Body user: LoginRequest
     ): LoginResponse
 
-//    @GET("stories")
-//    suspend fun getStory(
-//        @Header("Authorization") token: String,
-//        @Query("page") page: Int = 1,
-//        @Query("size") size: Int = 20
-//    ): StoryResponse
+    @GET("stories/{id}")
+    suspend fun getDetailsDestination(
+        @Header("Authorization") token: String,
+        @Path("id") destinationId: String?
+    ): DetailsResponse
+
 
     @GET("stories")
     suspend fun getStory(
@@ -41,19 +43,12 @@ interface ApiService {
         @Query("size") size: Int = 20
     ): StoryResponse
 
-    @GET("stories")
-    suspend fun getDatas(
-        @Header("Authorization") token: String
-    ) : StoryResponse
-
     @Multipart
     @POST("stories")
     suspend fun uploadStory(
         @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
-        @Part("lat") lat: RequestBody? = null,
-        @Part("lon") lon: RequestBody? = null
     ): PostResponse
 
 //    @GET("stories")

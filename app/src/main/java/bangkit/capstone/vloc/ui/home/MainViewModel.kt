@@ -34,7 +34,6 @@ class MainViewModel (private val repository: VlocRepository) : ViewModel() {
         return try {
             val response = repository.getDestination(token).cachedIn(viewModelScope)
             _isLoading.value = false
-            Log.d("dadawdada", response.value.toString())
             response
         } catch (e: HttpException) {
             _isLoading.value = false

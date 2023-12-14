@@ -29,8 +29,7 @@ import com.bumptech.glide.Glide
 class DestinationAdapter : PagingDataAdapter<ListDestinationItem, DestinationAdapter.MyViewHolder>(DIFF_CALLBACK) {
     class MyViewHolder(private val binding: DestinationItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(destination: ListDestinationItem) {
-           binding.tvItemName.text = destination.name.uppercase()
-            binding.tvItemDescription.text = destination.description
+            binding.tvItemName.text = destination.name.uppercase()
             Glide.with(itemView.context)
                 .load(destination.photoUrl)
                 .into(binding.imgItemPhoto)

@@ -73,7 +73,6 @@ data class StoryResponse(
     val message: String
 )
 
-
 @Entity(tableName = "destination")
 data class ListDestinationItem(
 
@@ -99,4 +98,41 @@ data class ListDestinationItem(
     @field:SerializedName("lat")
     val lat: Float
 )
+
+data class DetailsResponse(
+
+    @field:SerializedName("error")
+    val error: Boolean,
+
+    @field:SerializedName("message")
+    val message: String,
+
+    @field:SerializedName("story")
+    val story: Destination
+)
+
+data class Destination(
+
+    @field:SerializedName("photoUrl")
+    val photoUrl: String,
+
+    @field:SerializedName("createdAt")
+    val createdAt: String,
+
+    @field:SerializedName("name")
+    val name: String,
+
+    @field:SerializedName("description")
+    val description: String,
+
+    @field:SerializedName("lon")
+    val lon: Any,
+
+    @field:SerializedName("id")
+    val id: String,
+
+    @field:SerializedName("lat")
+    val lat: Any
+)
+
 

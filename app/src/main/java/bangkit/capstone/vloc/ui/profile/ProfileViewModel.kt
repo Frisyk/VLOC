@@ -1,42 +1,43 @@
-package bangkit.capstone.vloc.ui.details
+package bangkit.capstone.vloc.ui.profile
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import bangkit.capstone.vloc.data.VlocRepository
-import bangkit.capstone.vloc.data.model.DetailsResponse
 import bangkit.capstone.vloc.data.model.ListDestinationItem
 import bangkit.capstone.vloc.data.model.UserModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class DetailsViewModel(private val repository: VlocRepository) : ViewModel() {
+class ProfileViewModel(private val repository: VlocRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String> = _error
-
-    private val _destination = MutableLiveData<DetailsResponse?>()
-    val destination: LiveData<DetailsResponse?> = _destination
 
     fun getSession(): LiveData<UserModel> {
         return repository.getSession().asLiveData()
     }
 
-    suspend fun getDetails(token: String, destinationId: String?) {
+    fun logout() {
+        viewModelScope.launch {
+            repository.logout()
+        }
+    }
+
+    fun getAllStory(token: String): LiveData<PagingData<ListDestinationItem>>? {
         _isLoading.value = true
-        try {
-            val response = repository.getDetailsDestination(token, destinationId)
-            _destination.value = response
-        } catch (e: HttpException) {
-            _error.value = "Error fetching details"
-        } finally {
+        return try {
+            val response = repository.getDestination(token).cachedIn(viewModelScope)
             _isLoading.value = false
+            response
+        } catch (e: HttpException) {
+            _isLoading.value = false
+            null
         }
     }
 }
