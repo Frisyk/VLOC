@@ -20,6 +20,7 @@ import bangkit.capstone.vloc.databinding.FragmentDetailsBinding
 import bangkit.capstone.vloc.databinding.FragmentHomeBinding
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
 import kotlinx.coroutines.launch
 
 class DetailsFragment : Fragment() {
@@ -38,18 +39,23 @@ class DetailsFragment : Fragment() {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         val destinationId = arguments?.getString("destinationId")
 
+        exitTransition = MaterialFadeThrough()
+
+
         viewModel.getSession().observe(viewLifecycleOwner) {
             if (it != null) {
                 val token = it.token
                 lifecycleScope.launch {
                     viewModel.getDetails("Bearer $token", destinationId)
-                }            }
+                }
+            } else {
+                binding?.loginInDetails?.visibility = View.VISIBLE
+            }
         }
 
 
 
         viewModel.destination.observe(viewLifecycleOwner) { response ->
-            Log.d("resssss", response?.story.toString())
                 binding?.tvdetail?.text = response?.story?.description
                 binding?.tvname?.text = response?.story?.name
                 binding?.ivdetail?.let { imageView ->
@@ -63,9 +69,7 @@ class DetailsFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
-
     }
 
 

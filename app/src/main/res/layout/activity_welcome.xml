@@ -8,24 +8,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.hero.WelcomeActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="283dp"
-        android:layout_height="261dp"
-        android:contentDescription="@string/hero"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/hero" />
-
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="260dp"
         android:layout_marginEnd="32dp"
         android:alpha="0"
         android:text="@string/title_welcome_page"
@@ -43,49 +31,17 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
         android:alpha="0"
+        android:lineHeight="35dp"
         android:text="@string/message_welcome_page"
         android:textColor="?attr/colorSecondary"
         android:textSize="20sp"
-        android:lineHeight="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
-        tools:alpha="100" />
-
-    <Button
-        android:id="@+id/signupButton"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
-        android:alpha="0"
-        android:backgroundTint="?attr/colorPrimary"
-        android:text="@string/signup"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="@+id/descTextView"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guidelineVertical"
-        app:layout_constraintTop_toBottomOf="@+id/descTextView"
-        tools:alpha="100" />
-
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="16dp"
-        android:alpha="0"
-        android:backgroundTint="?attr/colorPrimary"
-        android:text="@string/login"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineVertical"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/descTextView"
-        app:layout_constraintTop_toBottomOf="@+id/descTextView"
         tools:alpha="100" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -105,5 +61,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintGuide_percent="0.5"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/get_started_btn"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="339dp"
+        android:layout_height="67dp"
+        app:icon="@drawable/ic_go"
+        app:iconGravity="textEnd"
+        app:iconSize="30dp"
+        android:text="@string/get_started"
+        android:textAllCaps="false"
+        android:textSize="24sp"
+        app:cornerRadius="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descTextView"
+        app:layout_constraintVertical_bias="0.35"
+        app:strokeColor="?attr/colorPrimary"
+        app:strokeWidth="3dp" />
+
+    <ImageView
+        android:id="@+id/welcome_img"
+        android:layout_width="717dp"
+        android:layout_height="514dp"
+        android:layout_marginTop="-30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/prambanan2"
+        tools:layout_editor_absoluteX="-145dp"
+        tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

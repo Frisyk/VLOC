@@ -19,27 +19,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/register"
-        android:contentDescription="@string/destination_photo" />
-
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="32dp"
         android:alpha="0"
         android:text="@string/title_signup_page"
@@ -190,5 +175,28 @@
         android:layout_height="64dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.06" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="400dp"
+        android:layout_height="276dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/beach0"
+        tools:layout_editor_absoluteX="-4dp" />
+
+    <TextView
+        android:id="@+id/login_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/login_in_register_activity"
+        android:textColor="?attr/colorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

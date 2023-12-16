@@ -5,12 +5,16 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Patterns
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.ActivityNavigator
 import bangkit.capstone.vloc.ViewModelFactory
 import bangkit.capstone.vloc.data.model.RegisterRequest
 import bangkit.capstone.vloc.databinding.ActivityRegisterBinding
@@ -64,12 +68,76 @@ class RegisterActivity : AppCompatActivity() {
         }
         supportActionBar?.hide()
 
-//        Validation.nameValidation(binding)
-//        Validation.buttonValidation(binding)
+        loginAction()
+        validateName()
+        validateEmail()
+        validatePassword()
     }
 
+    private fun validateName() {
+        binding?.nameEditText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Do nothing
+            }
 
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrBlank()) {
+                    binding?.nameEditTextLayout?.error = "Name cannot be empty"
+                } else {
+                    binding?.nameEditTextLayout?.error = null
+                }
+            }
+        })
+    }
+    private fun validateEmail() {
+        binding?.emailEditText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Do nothing
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null && !isValidEmail(s.toString())) {
+                    binding?.emailEditTextLayout?.error = "Enter a valid email address"
+                } else {
+                    binding?.emailEditTextLayout?.error = null
+                }
+            }
+        })
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+    private fun validatePassword() {
+        binding?.passwordEditText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null && s.length < 8) {
+                    binding?.passwordEditTextLayout?.error = "Password should be at least 8 characters"
+                } else {
+                    binding?.passwordEditTextLayout?.error = null
+                }
+            }
+        })
+
+    }
+
+    private fun loginAction() {
+        binding?.loginTv?.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+    }
     private fun setupAction() {
         val name = binding?.nameEditText?.text.toString().trim()
         val email = binding?.emailEditText?.text.toString().trim()
@@ -88,6 +156,10 @@ class RegisterActivity : AppCompatActivity() {
         binding?.loadingBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
+    override fun finish() {
+        super.finish()
+        ActivityNavigator.applyPopAnimationsToPendingTransition(this)
+    }
     private fun playAnimation() {
         val animators = listOf(
             ObjectAnimator.ofFloat(binding?.titleTextView, View.ALPHA, 1f).setDuration(100),

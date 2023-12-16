@@ -7,17 +7,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import bangkit.capstone.vloc.R
 import bangkit.capstone.vloc.ViewModelFactory
 import bangkit.capstone.vloc.databinding.FragmentSearchBinding
 import bangkit.capstone.vloc.ui.getImageUri
+import bangkit.capstone.vloc.ui.home.DestinationAdapter
+import bangkit.capstone.vloc.ui.home.LoadingAdapter
 import bangkit.capstone.vloc.ui.reduceFileImage
 import bangkit.capstone.vloc.ui.uriToFile
+import com.google.android.material.transition.MaterialFadeThrough
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -38,12 +45,31 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
+
+        enterTransition = MaterialFadeThrough()
+
+        val layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+        binding?.rvDestination?.layoutManager = layoutManager
+
+        viewModel.getSession().observe(viewLifecycleOwner) { user ->
+            val token = user.token
+            val adapter = DestinationAdapter()
+            binding?.rvDestination?.adapter = adapter.withLoadStateFooter(
+                footer = LoadingAdapter {
+                    adapter.retry()
+                }
+            )
+            viewModel.getAllStory("Bearer $token")?.observe(viewLifecycleOwner) { response ->
+                if (response != null) {
+                    adapter.submitData(lifecycle, response)
+                }
+            }
+        }
         return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         viewModel.isLoading.observe(viewLifecycleOwner) {
             showLoading(it)
@@ -71,6 +97,14 @@ class SearchFragment : Fragment() {
                     showToast(getString(R.string.failed_message))
                 }
             }
+        }
+    }
+
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            AnimationUtils.loadAnimation(context, R.anim.fade_in)
+        } else {
+            AnimationUtils.loadAnimation(context, R.anim.fade_out)
         }
     }
 
@@ -124,33 +158,6 @@ class SearchFragment : Fragment() {
         } ?: showToast(getString(R.string.warning))
     }
 
-//    private val requestPermissionLauncher =
-//        registerForActivityResult(
-//            ActivityResultContracts.RequestPermission()
-//        ) { isGranted: Boolean ->
-//            if (isGranted) {
-//                getMyLocation()
-//            }
-//        }
-
-//    private fun getMyLocation() {
-//        if (ContextCompat.checkSelfPermission(
-//                requireContext().applicationContext,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-//                if (location != null) {
-//                    this.location = location
-//                } else {
-//                    binding?.locationCheckBox?.isChecked = false
-//                    Toast.makeText(requireContext(), getString(R.string.location_no_granted), Toast.LENGTH_SHORT ).show()
-//                }
-//            }
-//        } else {
-//            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//        }
-//    }
 
     private fun showLoading(isLoading: Boolean) {
         binding?.progressIndicator?.visibility = if (isLoading) View.VISIBLE else View.GONE

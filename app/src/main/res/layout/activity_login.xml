@@ -19,19 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineHorizontal2"
-        app:srcCompat="@drawable/login"
-        android:contentDescription="@string/login" />
-
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="0dp"
@@ -172,5 +159,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintGuide_percent="0.1"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="550dp"
+        android:layout_height="530dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="-110dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/menoreh1" />
+
+    <TextView
+        android:id="@+id/register_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="?attr/colorPrimary"
+        android:text="@string/register_word_in_login"
+        app:layout_constraintEnd_toEndOf="@+id/loginButton"
+        app:layout_constraintStart_toStartOf="@+id/loginButton"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

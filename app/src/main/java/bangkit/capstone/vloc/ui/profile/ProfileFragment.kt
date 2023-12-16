@@ -17,6 +17,7 @@ import bangkit.capstone.vloc.ui.home.DestinationAdapter
 import bangkit.capstone.vloc.ui.home.LoadingAdapter
 import bangkit.capstone.vloc.ui.home.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
 
 class ProfileFragment : Fragment() {
 
@@ -32,6 +33,8 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+        enterTransition = MaterialFadeThrough()
 
         val layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         binding?.rvDestination?.layoutManager = layoutManager

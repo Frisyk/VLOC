@@ -30,42 +30,44 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
-
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="67dp"
-                >
-
+                android:layout_height="wrap_content">
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:theme="@style/Widget.AppCompat.Toolbar"
-                    app:layout_collapseMode="pin">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginEnd="30dp"
-                            android:src="@drawable/ic_fav_border" />
-
-                    </RelativeLayout>
+                    app:navigationIcon="@drawable/ic_light"
+                    app:title="@string/app_name"
+                    app:titleMarginTop="15dp"
+                    android:theme="@style/Widget.AppCompat.Toolbar">
 
                 </androidx.appcompat.widget.Toolbar>
-
             </com.google.android.material.appbar.AppBarLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:orientation="horizontal">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvDestination2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:overScrollMode="never"
+                    android:scrollbarSize="0dp"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    tools:listitem="@layout/destination_item" />
+            </LinearLayout>
+
             <Spinner
                 android:id="@+id/categories_spinner"
                 android:layout_width="wrap_content"
                 android:textAlignment="center"
                 android:layout_marginStart="20dp"
                 android:layout_height="48dp"
+                android:layout_marginVertical="10dp"
                 android:layout_marginEnd="30dp"
                 android:entries="@array/categories" />
 
@@ -73,10 +75,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvDestination"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/toolbar"
-                android:layout_marginTop="0dp"
+                android:layout_height="800dp"
                 android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="0dp"
                 android:overScrollMode="never"
                 android:scrollbarSize="0dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"

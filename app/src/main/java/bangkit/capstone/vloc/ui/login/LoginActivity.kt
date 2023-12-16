@@ -9,16 +9,19 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.ActivityNavigator
 import bangkit.capstone.vloc.ui.home.MainActivity
 import bangkit.capstone.vloc.ViewModelFactory
 import bangkit.capstone.vloc.data.model.LoginRequest
 import bangkit.capstone.vloc.databinding.ActivityLoginBinding
+import bangkit.capstone.vloc.ui.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
     private var _binding: ActivityLoginBinding? = null
@@ -34,12 +37,12 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         setupView()
+        registerAction()
         playAnimation()
+        validateEmail()
+        validatePassword()
 
         binding?.loginButton?.setOnClickListener {
-            viewModel.response.observe(this) {
-                Log.d("res", it.message)
-            }
             setupAction()
         }
 
@@ -51,6 +54,52 @@ class LoginActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun registerAction(){
+        binding?.registerTv?.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+    }
+    private fun validateEmail() {
+        binding?.emailEditText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Do nothing
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null && !isValidEmail(s.toString())) {
+                    binding?.emailEditTextLayout?.error = "Enter a valid email address"
+                } else {
+                    binding?.emailEditTextLayout?.error = null
+                }
+            }
+        })
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+    private fun validatePassword() {
+        binding?.passwordEditText?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null && s.length < 8) {
+                    binding?.passwordEditTextLayout?.error = "Password should be at least 8 characters"
+                } else {
+                    binding?.passwordEditTextLayout?.error = null
+                }
+            }
+        })
+
     }
 
     private fun setupView() {
@@ -118,6 +167,10 @@ class LoginActivity : AppCompatActivity() {
         passwordEditTextLayout?.editText?.addTextChangedListener(textWatcher)
     }
 
+    override fun finish() {
+        super.finish()
+        ActivityNavigator.applyPopAnimationsToPendingTransition(this)
+    }
     private fun playAnimation() {
 
         val viewsToAnimate = listOf(
