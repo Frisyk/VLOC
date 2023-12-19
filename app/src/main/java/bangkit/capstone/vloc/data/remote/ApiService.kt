@@ -1,6 +1,7 @@
 package bangkit.capstone.vloc.data.remote
 
 import bangkit.capstone.vloc.data.model.DetailsResponse
+import bangkit.capstone.vloc.data.model.FavoriteData
 import bangkit.capstone.vloc.data.model.StoryResponse
 import bangkit.capstone.vloc.data.model.LoginRequest
 import bangkit.capstone.vloc.data.model.LoginResponse
@@ -10,6 +11,7 @@ import bangkit.capstone.vloc.data.model.RegisterRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -51,9 +53,13 @@ interface ApiService {
         @Part("description") description: RequestBody,
     ): PostResponse
 
-//    @GET("stories")
-//    suspend fun getStoriesWithLocation(
-//        @Header("Authorization") token: String,
-//        @Query("location") location : Int = 1,
-//    ): StoryResponse
+    @POST("stories")
+    suspend fun postFavorite(
+        @Body favoriteData: FavoriteData
+    ) : PostResponse
+
+    @DELETE("stories")
+    suspend fun deleteFavorite(
+        @Body favoriteData: FavoriteData
+    ) : PostResponse
 }

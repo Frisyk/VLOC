@@ -4,13 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="bangkit.capstone.vloc.ui.home.MainActivity">
     <item
-        android:id="@+id/change_theme"
-        android:icon="@drawable/ic_light"
-        android:title="@string/theme"
-        app:showAsAction="ifRoom"/>
-    <item
-        android:id="@+id/login_logout"
+        android:id="@+id/login"
         android:icon="@drawable/ic_login"
         android:title="@string/login"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
 </menu>

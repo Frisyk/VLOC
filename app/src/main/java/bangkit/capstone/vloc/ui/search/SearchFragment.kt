@@ -88,16 +88,6 @@ class SearchFragment : Fragment() {
 
         binding?.galleryButton?.setOnClickListener { startGallery() }
         binding?.cameraButton?.setOnClickListener { startCamera() }
-        binding?.uploadButton?.setOnClickListener {
-            viewModel.getSession().observe(viewLifecycleOwner) { user ->
-                val token = "Bearer ${user.token}"
-                if (token.isNotEmpty()) {
-                    performUpload(token)
-                } else {
-                    showToast(getString(R.string.failed_message))
-                }
-            }
-        }
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
@@ -137,6 +127,14 @@ class SearchFragment : Fragment() {
     }
 
     private fun showImage() {
+        viewModel.getSession().observe(viewLifecycleOwner) { user ->
+            val token = "Bearer ${user.token}"
+            if (token.isNotEmpty()) {
+                performUpload(token)
+            } else {
+                showToast(getString(R.string.failed_message))
+            }
+        }
         currentImageUri?.let {
             binding?.previewImageView?.setImageURI(it)
         }
@@ -145,7 +143,7 @@ class SearchFragment : Fragment() {
     private fun performUpload(token: String) {
         currentImageUri?.let { uri ->
             val imageFile = uriToFile(uri, requireContext()).reduceFileImage()
-            val description = "hehehehehe"
+            val description = "Semangattt ges"
 
             val requestBody = description.toRequestBody("text/plain".toMediaType())
             val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())

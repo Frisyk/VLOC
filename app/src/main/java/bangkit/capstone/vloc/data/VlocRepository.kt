@@ -12,6 +12,7 @@ import bangkit.capstone.vloc.data.local.database.VlocDatabase
 //import bangkit.capstone.vloc.data.local.database.VlocDatabase
 import bangkit.capstone.vloc.data.local.pref.UserPreference
 import bangkit.capstone.vloc.data.model.DetailsResponse
+import bangkit.capstone.vloc.data.model.FavoriteData
 import bangkit.capstone.vloc.data.model.StoryResponse
 import bangkit.capstone.vloc.data.model.ListDestinationItem
 import bangkit.capstone.vloc.data.model.LoginRequest
@@ -82,6 +83,12 @@ class VlocRepository private constructor(
         )
     }
 
+//    suspend fun postFavorite(token: String, data: FavoriteData): PostResponse {
+//        return apiService.postFavorite(token, data)
+//    }
+suspend fun postFavorite(data: FavoriteData): PostResponse {
+    return apiService.postFavorite(data)
+}
 
     companion object {
         @Volatile

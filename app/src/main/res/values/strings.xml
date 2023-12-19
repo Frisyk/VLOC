@@ -45,9 +45,34 @@
     <string name="temple">Temple</string>
     <string name="get_started">Let\'s Start!</string>
     <string name="theme">Theme</string>
-    <string name="register_word_in_login">Don\'t have an accout? Please, Register Now!</string>
+    <string name="register_word_in_login">Don\'t have an account? Please, Register Now!</string>
     <string name="result">Result</string>
     <string name="title_details">Details</string>
     <string name="login_in_register_activity">or Login</string>
     <string name="login_first">Login First!</string>
+    <string name="rating">Rating</string>
+    <string name="rating_score">%s⭐</string>
+    <string name="score">4,5⭐</string>
+    <string name="open_time">Open Time</string>
+    <string name="time">08.00 – 20.00 WIB</string>
+    <string name="time_placeholder">%s WIB</string>
+    <string name="htm">HTM</string>
+    <string name="htm_price">Rp %s ,00</string>
+    <string name="htm_nominal">Rp 20.000, 00</string>
+    <string name="open_maps">Open Maps</string>
+
+    <string name="pref_dark_title">Dark mode</string>
+    <string name="pref_key_dark" translatable="false">key_dark_mode</string>
+    <string name="pref_dark_follow_system" translatable="false">follow_system</string>
+    <string name="pref_dark_on" translatable="false">on</string>
+    <string name="pref_dark_off" translatable="false">off</string>
+    <string name="dark_mode_auto">Automatic</string>
+    <string name="dark_mode_on">Dark mode</string>
+    <string name="dark_mode_off">Light mode</string>
+    <string name="exit_message">Are you sure you want to leave?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="guest">Guest</string>
+    <string name="find_your_destination_here">Find Your Destination Here</string>
+
 </resources>

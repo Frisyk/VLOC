@@ -135,4 +135,10 @@ data class Destination(
     val lat: Any
 )
 
+data class FavoriteData(
+    val id: String?,
+    val destinationUrl: String?,
+    val destinationName: String?
+)
+
 

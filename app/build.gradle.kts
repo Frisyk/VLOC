@@ -54,6 +54,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.preference:preference-ktx:1.2.1")
     testImplementation("junit:junit:4.13.2")
     testImplementation("junit:junit:4.12")
     testImplementation("junit:junit:4.12")

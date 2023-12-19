@@ -14,15 +14,20 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ActivityNavigator
+import bangkit.capstone.vloc.R
 import bangkit.capstone.vloc.ui.home.MainActivity
 import bangkit.capstone.vloc.ViewModelFactory
 import bangkit.capstone.vloc.data.model.LoginRequest
 import bangkit.capstone.vloc.databinding.ActivityLoginBinding
 import bangkit.capstone.vloc.ui.register.RegisterActivity
 
+@Suppress("DEPRECATION")
 class LoginActivity : AppCompatActivity() {
     private var _binding: ActivityLoginBinding? = null
     private val binding get() = _binding
@@ -56,6 +61,20 @@ class LoginActivity : AppCompatActivity() {
         _binding = null
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, MainActivity::class.java))
+    }
+
+    private fun showExitConfirmationDialog() {
+        AlertDialog.Builder(applicationContext)
+            .setMessage(getString(R.string.exit_message))
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                this.finish()
+            }
+            .setNegativeButton(getString(R.string.no), null)
+            .show()
+    }
     private fun registerAction(){
         binding?.registerTv?.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)

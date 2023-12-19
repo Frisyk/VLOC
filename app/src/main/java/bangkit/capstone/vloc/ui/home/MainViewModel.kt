@@ -29,7 +29,7 @@ class MainViewModel (private val repository: VlocRepository) : ViewModel() {
         }
     }
 
-    fun getAllStory(token: String): LiveData<PagingData<ListDestinationItem>>? {
+    fun getAllDestination(token: String): LiveData<PagingData<ListDestinationItem>>? {
         _isLoading.value = true
         return try {
             val response = repository.getDestination(token).cachedIn(viewModelScope)

@@ -18,8 +18,10 @@ import androidx.navigation.ActivityNavigator
 import bangkit.capstone.vloc.ViewModelFactory
 import bangkit.capstone.vloc.data.model.RegisterRequest
 import bangkit.capstone.vloc.databinding.ActivityRegisterBinding
+import bangkit.capstone.vloc.ui.home.MainActivity
 import bangkit.capstone.vloc.ui.login.LoginActivity
 
+@Suppress("DEPRECATION")
 class RegisterActivity : AppCompatActivity() {
     private var _binding: ActivityRegisterBinding? = null
     private val binding get() = _binding
@@ -56,6 +58,10 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this, MainActivity::class.java))
+    }
     @Suppress("DEPRECATION")
     private fun setupView() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

@@ -3,6 +3,7 @@ package bangkit.capstone.vloc.ui.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         showContent()
 //        observeSession()
-        showGreetings()
+//        showGreetings()
     }
 
 //    private fun observeSession() {
@@ -45,8 +46,6 @@ class MainActivity : AppCompatActivity() {
 //            if (!user.isLogin) {
 //                startActivity(Intent(this, WelcomeActivity::class.java))
 //                finish()
-//            } else {
-//                findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_home)
 //            }
 //        }
 //    }
@@ -60,31 +59,36 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_home, R.id.navigation_profile, R.id.navigation_search, R.id.navigation_details
         ).build()
 
-        navController.currentBackStack
-
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if(destination.id == R.id.navigation_details) {
+               navView.visibility = View.GONE
+            } else {
+                navView.visibility = View.VISIBLE
+            }
+        }
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
-    private fun showGreetings() {
-        val currentTime = Calendar.getInstance()
-        val hourOfDay = currentTime.get(Calendar.HOUR_OF_DAY)
-
-        val greetingMessage = when {
-            hourOfDay < 10 -> "Selamat Pagi"
-            hourOfDay < 15 -> "Selamat Siang"
-            hourOfDay < 18 -> "Selamat Siang"
-            else -> "Selamat Malam"
-        }
-
-
-        val snackBarView = Snackbar.make(findViewById(R.id.nav_view), greetingMessage , Snackbar.LENGTH_LONG)
-        val view = snackBarView.view
-        val params = view.layoutParams as FrameLayout.LayoutParams
-        params.gravity = Gravity.TOP
-        view.layoutParams = params
-        snackBarView.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
-        snackBarView.show()
-    }
+//    private fun showGreetings() {
+//        val currentTime = Calendar.getInstance()
+//        val hourOfDay = currentTime.get(Calendar.HOUR_OF_DAY)
+//
+//        val greetingMessage = when {
+//            hourOfDay < 10 -> "Selamat Pagi"
+//            hourOfDay < 15 -> "Selamat Siang"
+//            hourOfDay < 18 -> "Selamat Siang"
+//            else -> "Selamat Malam"
+//        }
+//
+//
+//        val snackBarView = Snackbar.make(findViewById(R.id.nav_view), greetingMessage , Snackbar.LENGTH_LONG)
+//        val view = snackBarView.view
+//        val params = view.layoutParams as FrameLayout.LayoutParams
+//        params.gravity = Gravity.TOP
+//        view.layoutParams = params
+//        snackBarView.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+//        snackBarView.show()
+//    }
 
     private fun showToast() {
         Toast.makeText(this, R.string.failed_message, Toast.LENGTH_SHORT).show()
