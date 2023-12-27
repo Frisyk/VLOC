@@ -8,22 +8,16 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ActivityNavigator
-import bangkit.capstone.vloc.R
 import bangkit.capstone.vloc.ui.home.MainActivity
 import bangkit.capstone.vloc.ViewModelFactory
-import bangkit.capstone.vloc.data.model.LoginRequest
 import bangkit.capstone.vloc.databinding.ActivityLoginBinding
 import bangkit.capstone.vloc.ui.register.RegisterActivity
 
@@ -66,15 +60,6 @@ class LoginActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
     }
 
-    private fun showExitConfirmationDialog() {
-        AlertDialog.Builder(applicationContext)
-            .setMessage(getString(R.string.exit_message))
-            .setPositiveButton(getString(R.string.yes)) { _, _ ->
-                this.finish()
-            }
-            .setNegativeButton(getString(R.string.no), null)
-            .show()
-    }
     private fun registerAction(){
         binding?.registerTv?.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
@@ -136,20 +121,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-        val email = binding?.emailEditText?.text.toString()
+        val email = binding?.emailEditText?.text
         val password = binding?.passwordEditText?.text.toString()
-        val user = LoginRequest(email, password)
 
-        viewModel.postLogin(user)
+        viewModel.postLogin(email.toString(), password)
         viewModel.response.observe(this) {
-            if (!it.error) {
-                showToast(it.message)
+            if (it.status.isNotEmpty()) {
+                showToast(it.status)
 
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             } else {
-                showToast(it.message)
+                showToast(it.status)
             }
         }
     }

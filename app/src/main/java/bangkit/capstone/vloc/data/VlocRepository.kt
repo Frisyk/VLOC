@@ -1,33 +1,28 @@
 package bangkit.capstone.vloc.data
 
-import android.location.Location
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
+import bangkit.capstone.vloc.data.local.database.Favorites
 import bangkit.capstone.vloc.data.local.database.VlocDatabase
-//import bangkit.capstone.vloc.data.local.database.VlocDatabase
 import bangkit.capstone.vloc.data.local.pref.UserPreference
-import bangkit.capstone.vloc.data.model.DetailsResponse
-import bangkit.capstone.vloc.data.model.FavoriteData
-import bangkit.capstone.vloc.data.model.StoryResponse
-import bangkit.capstone.vloc.data.model.ListDestinationItem
-import bangkit.capstone.vloc.data.model.LoginRequest
+import bangkit.capstone.vloc.data.model.Details
+import bangkit.capstone.vloc.data.model.FavoritesResponse
+import bangkit.capstone.vloc.data.model.LocationResponseItem
 import bangkit.capstone.vloc.data.model.LoginResponse
 import bangkit.capstone.vloc.data.model.PostResponse
-import bangkit.capstone.vloc.data.model.RegisterRequest
+import bangkit.capstone.vloc.data.model.PredictResponse
+import bangkit.capstone.vloc.data.model.Response
 import bangkit.capstone.vloc.data.model.UserModel
+import bangkit.capstone.vloc.data.model.UserResponseItem
 import bangkit.capstone.vloc.data.paging.VlocRemoteMediator
-//import bangkit.capstone.vloc.data.paging.VlocRemoteMediator
 import bangkit.capstone.vloc.data.remote.ApiService
 import kotlinx.coroutines.flow.Flow
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
+
 
 class VlocRepository private constructor(
     private val userPreference: UserPreference,
@@ -48,47 +43,83 @@ class VlocRepository private constructor(
         userPreference.logout()
     }
 
-    suspend fun postRegister(user: RegisterRequest): PostResponse {
-        return apiService.register(user)
+    suspend fun postRegister(username: String, email: String, password: String): PostResponse {
+        return apiService.register(username, email, password)
     }
 
-    suspend fun postLogin(user: LoginRequest): LoginResponse {
-        return apiService.login(user)
+    suspend fun postLogin(email: String, password: String): LoginResponse {
+        return apiService.login(email, password)
+    }
+
+    suspend fun getUserDetails(token: String, userId: Int): UserResponseItem {
+        return apiService.getUserDetails(token, userId)
+    }
+
+    suspend fun changePhotoProfile(token: String, userId: Int, file: MultipartBody.Part): PostResponse {
+        return apiService.changePhotoProfile(token, userId, file)
+    }
+
+
+    suspend fun getDetailsLocation(idLocation: String): Details {
+        return apiService.getDetailsLocation(idLocation)
+    }
+
+
+    suspend fun getUserFavorites(token: String, userId: Int): FavoritesResponse {
+        return apiService.getUserFavorites(token, userId)
+    }
+
+    suspend fun postFavorite(token: String, userId: Int?, locationId: String): PostResponse {
+        return apiService.postFavorite(token, userId, locationId)
+    }
+
+    suspend fun deleteFavorite(token: String, userId: Int, locationId: String): PostResponse {
+        return apiService.deleteFavorite(token, userId, locationId)
+    }
+
+    suspend fun predictLocation(token: String, file: MultipartBody.Part): PredictResponse {
+        return apiService.predictLocation(token, file)
+    }
+
+    suspend fun getLocation(): Response {
+        return apiService.getLocation()
+    }
+
+    suspend fun getLocationBasedCategory(category: String): Response {
+        return apiService.getLocationBasedCategory(category)
     }
 
     // database
-    fun getDestination(token: String): LiveData<PagingData<ListDestinationItem>> {
+    fun getDestination(category: String?): LiveData<PagingData<LocationResponseItem>> {
 
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
-            remoteMediator = VlocRemoteMediator(vlocDatabase, apiService, token),
+            remoteMediator = VlocRemoteMediator(vlocDatabase, apiService, category),
             pagingSourceFactory = {
-                vlocDatabase.vlocDao().getAllStory()
+                vlocDatabase.vlocDao().getAllLocation()
             }
         ).liveData
     }
 
-    suspend fun getDetailsDestination(token: String, destinationId: String?): DetailsResponse{
-        return apiService.getDetailsDestination(token, destinationId)
+
+    // local
+    suspend fun postFavorite(data: Favorites) {
+        return vlocDatabase.favoritesDao().insert(data)
+    }
+    suspend fun deleteFavorite(data: Favorites) {
+        return vlocDatabase.favoritesDao().delete(data)
     }
 
-    suspend fun postStory(token: String, multipartBody: MultipartBody.Part, requestBody: RequestBody): PostResponse {
-        return apiService.uploadStory(
-            token,
-            multipartBody,
-            requestBody,
-        )
+    fun checkFavorites(id: String?): LiveData<Boolean> {
+        return vlocDatabase.favoritesDao().isFavoriteUser(id)
     }
 
-//    suspend fun postFavorite(token: String, data: FavoriteData): PostResponse {
-//        return apiService.postFavorite(token, data)
-//    }
-suspend fun postFavorite(data: FavoriteData): PostResponse {
-    return apiService.postFavorite(data)
-}
+    fun getAllFavorites(): LiveData<List<Favorites>> = vlocDatabase.favoritesDao().getFavorites()
+
+
 
     companion object {
         @Volatile

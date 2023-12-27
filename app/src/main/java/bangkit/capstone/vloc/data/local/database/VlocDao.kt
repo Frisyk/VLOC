@@ -5,16 +5,17 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import bangkit.capstone.vloc.data.model.ListDestinationItem
+import bangkit.capstone.vloc.data.model.LocationResponseItem
 
 @Dao
 interface VLocDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStory(destination: List<ListDestinationItem>)
+    suspend fun insertLocation(destination: List<LocationResponseItem>)
 
     @Query("SELECT * FROM destination")
-    fun getAllStory(): PagingSource<Int, ListDestinationItem>
+    fun getAllLocation(): PagingSource<Int, LocationResponseItem>
 
     @Query("DELETE FROM destination")
     suspend fun deleteAll()
+
 }

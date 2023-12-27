@@ -2,10 +2,27 @@
 
     <ListPreference
         app:defaultValue="@string/pref_dark_follow_system"
+        app:icon="@drawable/ic_dark"
         app:entries="@array/dark_mode"
         app:entryValues="@array/dark_mode_value"
         app:key="@string/pref_key_dark"
         app:title="@string/pref_dark_title"
         app:useSimpleSummaryProvider="true" />
 
+    <Preference
+        app:defaultValue="id"
+        app:entries="@array/language_entries"
+        app:entryValues="@array/language_values"
+        app:icon="@drawable/ic_language"
+        app:key="@string/pref_key_language"
+        app:title="@string/pref_language_title"
+        app:useSimpleSummaryProvider="true" />
+
+    <Preference
+        app:key="@string/pref_key_logout"
+        app:title="Logout"
+        app:summary="Tap to log out"
+        app:icon="@drawable/ic_logout"
+        app:iconSpaceReserved="false"
+         />
 </PreferenceScreen>

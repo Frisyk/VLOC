@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import bangkit.capstone.vloc.data.VlocRepository
 import bangkit.capstone.vloc.di.Injection
+import bangkit.capstone.vloc.setting.SettingViewModel
 import bangkit.capstone.vloc.ui.details.DetailsViewModel
 import bangkit.capstone.vloc.ui.home.MainViewModel
 import bangkit.capstone.vloc.ui.login.LoginViewModel
@@ -36,6 +37,9 @@ class ViewModelFactory(private val repository: VlocRepository) : ViewModelProvid
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(SettingViewModel::class.java) -> {
+                SettingViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

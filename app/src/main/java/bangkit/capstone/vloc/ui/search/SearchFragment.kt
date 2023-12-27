@@ -12,23 +12,19 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.navigation.findNavController
 import bangkit.capstone.vloc.R
 import bangkit.capstone.vloc.ViewModelFactory
 import bangkit.capstone.vloc.databinding.FragmentSearchBinding
 import bangkit.capstone.vloc.ui.getImageUri
-import bangkit.capstone.vloc.ui.home.DestinationAdapter
-import bangkit.capstone.vloc.ui.home.LoadingAdapter
-import bangkit.capstone.vloc.ui.reduceFileImage
 import bangkit.capstone.vloc.ui.uriToFile
+import com.bumptech.glide.Glide
 import com.google.android.material.transition.MaterialFadeThrough
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
@@ -48,23 +44,7 @@ class SearchFragment : Fragment() {
 
         enterTransition = MaterialFadeThrough()
 
-        val layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-        binding?.rvDestination?.layoutManager = layoutManager
 
-        viewModel.getSession().observe(viewLifecycleOwner) { user ->
-            val token = user.token
-            val adapter = DestinationAdapter()
-            binding?.rvDestination?.adapter = adapter.withLoadStateFooter(
-                footer = LoadingAdapter {
-                    adapter.retry()
-                }
-            )
-            viewModel.getAllStory("Bearer $token")?.observe(viewLifecycleOwner) { response ->
-                if (response != null) {
-                    adapter.submitData(lifecycle, response)
-                }
-            }
-        }
         return binding?.root
     }
 
@@ -75,19 +55,40 @@ class SearchFragment : Fragment() {
             showLoading(it)
         }
 
-        viewModel.response.observe(viewLifecycleOwner) {
-            if (!it.error) {
+        viewModel.response.observe(viewLifecycleOwner) { predict ->
+            if (predict.status != "fail") {
                 showLoading(false)
-                showToast(it.message)
-//                val navController = findNavController()
-//                navController.navigate(R.id.navigation_home)
-            } else {
-                showToast(it.message)
+                binding?.nameResult?.text = predict.result.destinationName
+                binding?.predictResultAccuration?.text = getString(R.string.accuration, predict.probabilitis)
+                Glide.with(requireActivity())
+                    .load(predict.result.destinationImgUrl)
+                    .into(binding?.imageResult!!)
+                binding?.addressResult?.text = predict.result.address
+                binding?.directButton?.setOnClickListener{ view ->
+                    val bundle = bundleOf("destinationId" to predict.result.id)
+                    view.findNavController().navigate(R.id.action_navigation_home_to_navigation_details2, bundle)
+                }
             }
         }
 
-        binding?.galleryButton?.setOnClickListener { startGallery() }
-        binding?.cameraButton?.setOnClickListener { startCamera() }
+        binding?.galleryButton?.setOnClickListener {
+            viewModel.getSession().observe(viewLifecycleOwner) {
+                if (it.isLogin) {
+                    startGallery()
+                } else {
+                    showToast(getString(R.string.predict_message))
+                }
+            }
+        }
+        binding?.cameraButton?.setOnClickListener {
+            viewModel.getSession().observe(viewLifecycleOwner) {
+                if (it.isLogin) {
+                    startCamera()
+                } else {
+                    showToast(getString(R.string.predict_message))
+                }
+            }
+        }
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
@@ -128,31 +129,30 @@ class SearchFragment : Fragment() {
 
     private fun showImage() {
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
-            val token = "Bearer ${user.token}"
+            val token = user.token
             if (token.isNotEmpty()) {
-                performUpload(token)
+                predictLocation(token)
+                binding?.predictResult?.visibility = View.VISIBLE
             } else {
                 showToast(getString(R.string.failed_message))
             }
         }
         currentImageUri?.let {
-            binding?.previewImageView?.setImageURI(it)
+            binding?.previewImage?.setImageURI(it)
         }
     }
 
-    private fun performUpload(token: String) {
+    private fun predictLocation(token: String) {
         currentImageUri?.let { uri ->
-            val imageFile = uriToFile(uri, requireContext()).reduceFileImage()
-            val description = "Semangattt ges"
+            val imageFile = uriToFile(uri, requireContext())
 
-            val requestBody = description.toRequestBody("text/plain".toMediaType())
             val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
             val multipartBody = MultipartBody.Part.createFormData(
-                "photo",
+                "file",
                 imageFile.name,
                 requestImageFile
             )
-            viewModel.postStory(token, multipartBody, requestBody)
+            viewModel.predictImage(token, multipartBody)
         } ?: showToast(getString(R.string.warning))
     }
 

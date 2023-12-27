@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.WindowInsets
@@ -16,7 +17,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ActivityNavigator
 import bangkit.capstone.vloc.ViewModelFactory
-import bangkit.capstone.vloc.data.model.RegisterRequest
 import bangkit.capstone.vloc.databinding.ActivityRegisterBinding
 import bangkit.capstone.vloc.ui.home.MainActivity
 import bangkit.capstone.vloc.ui.login.LoginActivity
@@ -78,6 +78,7 @@ class RegisterActivity : AppCompatActivity() {
         validateName()
         validateEmail()
         validatePassword()
+        buttonValidation()
     }
 
     private fun validateName() {
@@ -149,10 +150,36 @@ class RegisterActivity : AppCompatActivity() {
         val email = binding?.emailEditText?.text.toString().trim()
         val password = binding?.passwordEditText?.text.toString().trim()
 
-        val userData = RegisterRequest(name, email, password)
-        viewModel.postRegister(userData)
+
+        viewModel.postRegister(name, email, password)
     }
 
+    private fun buttonValidation() {
+        val nameEditTextLayout = binding?.nameEditTextLayout
+        val emailEditTextLayout = binding?.emailEditTextLayout
+        val passwordEditTextLayout = binding?.passwordEditTextLayout
+        val registerButton = binding?.registerButton
+
+        val textWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+
+            override fun afterTextChanged(s: Editable?) {
+                val name = nameEditTextLayout?.editText?.text.toString().trim()
+                val email = emailEditTextLayout?.editText?.text.toString().trim()
+                val password = passwordEditTextLayout?.editText?.text.toString().trim()
+
+                val isNotEmpty = name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()
+
+                registerButton?.isEnabled = isNotEmpty
+            }
+        }
+
+        nameEditTextLayout?.editText?.addTextChangedListener(textWatcher)
+        emailEditTextLayout?.editText?.addTextChangedListener(textWatcher)
+        passwordEditTextLayout?.editText?.addTextChangedListener(textWatcher)
+    }
 
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

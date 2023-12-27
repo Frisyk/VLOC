@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VLOC</string>
+    <string name="login">Masuk</string>
+    <string name="message_welcome_page">"Jelajahi Tempat Menarik di Sekitarmu dan Temukan Keajaiban Tersembunyi!"</string>
+    <string name="title_welcome_page">Selamat Datang!</string>
+    <string name="title_signup_page">Silakan lengkapi data Anda terlebih dahulu</string>
+    <string name="email">Email</string>
+    <string name="password">Kata Sandi</string>
+    <string name="message_login_page">Silakan masukkan data Anda terlebih dahulu</string>
+    <string name="title_login_page">Ayo Mulai!</string>
+    <string name="name">Nama</string>
+    <string name="message_main_page">Selamat datang</string>
+    <string name="logout">Keluar</string>
+    <string name="signup">Daftar</string>
+    <string name="destination_name">Lokasi Saya</string>
+    <string name="description">Suatu Ketika</string>
+    <string name="date">11 Desember 2003</string>
+    <string name="destination_photo">Foto Destinasi</string>
+    <string name="camera">KAMERA</string>
+    <string name="upload">UNGGAH</string>
+    <string name="gallery">GALERI</string>
+    <string name="description_placeholder">Deskripsi</string>
+    <string name="warning">Ada kesalahan. Silakan coba lagi</string>
+    <string name="hero">foto utama</string>
+    <string name="setting">Pengaturan</string>
+    <string name="title_activity_maps" translatable="false">Aktivitas Peta</string>
+    <string name="maps" translatable="false">Peta</string>
+    <string name="retry">Coba Lagi</string>
+    <string name="failed_message">Gagal mengambil data</string>
+    <string name="valid_email">Email tidak valid. Email valid: 123@gmail.com</string>
+    <string name="valid_password">Kata sandi harus lebih dari 8 karakter</string>
+    <string name="add_my_location">Tambahkan Lokasi Saya</string>
+    <string name="media_not_selected">"Tidak ada media yang dipilih"</string>
+    <string name="location_no_granted">Lokasi Tidak Diberikan</string>
+
+    <string name="title_home">Beranda</string>
+    <string name="title_search">Cari</string>
+
+    <string name="title_profile">Profil</string>
+    <string name="welcome">Selamat datang!</string>
+    <string name="favorites">Favorit❤️</string>
+    <string name="get_started">Ayo Mulai!</string>
+    <string name="theme">Tema</string>
+    <string name="register_word_in_login">Belum punya akun? Silakan, Daftar Sekarang!</string>
+    <string name="result">Hasil</string>
+    <string name="title_details">Detail</string>
+    <string name="login_in_register_activity">atau Masuk</string>
+    <string name="login_first">Masuk terlebih dahulu!</string>
+    <string name="rating">Peringkat</string>
+    <string name="rating_score">%s⭐</string>
+    <string name="accuration">%s Persen</string>
+    <string name="score">4,5⭐</string>
+    <string name="open_time">Jam Buka</string>
+    <string name="time">08.00 – 20.00 WIB</string>
+    <string name="time_placeholder">%s WIB</string>
+    <string name="htm">HTM</string>
+    <string name="htm_price">Rp %s0</string>
+    <string name="htm_nominal">Rp 20.000, 00</string>
+    <string name="open_maps">Buka Peta</string>
+
+    <string name="pref_dark_title">Mode Gelap</string>
+    <string name="dark_mode_auto">Otomatis</string>
+    <string name="dark_mode_on">Mode Gelap</string>
+    <string name="dark_mode_off">Mode Terang</string>
+    <string name="exit_message">Apakah Anda yakin ingin keluar?</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="guest">Tamu</string>
+    <string name="find_your_destination_here">Temukan Destinasi Anda Di Sini</string>
+    <string name="you_haven_t_login_yet">Anda Belum Masuk</string>
+    <string name="pref_language_title">Bahasa</string>
+    <string name="hi_user">Hi, User!</string>
+    <string name="greetingformat">Hi, %s !</string>
+    <string name="our_recommendation">Rekomendasi kami</string>
+    <string name="predict_message">Login dulu yaa :)</string>
+
+</resources>

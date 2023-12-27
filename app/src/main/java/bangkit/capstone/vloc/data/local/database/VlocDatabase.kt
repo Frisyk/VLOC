@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import bangkit.capstone.vloc.data.model.ListDestinationItem
+import bangkit.capstone.vloc.data.model.LocationResponseItem
 
 @Database(
-    entities = [ListDestinationItem::class, RemoteKeys::class],
-    version = 2,
+    entities = [LocationResponseItem::class, RemoteKeys::class, Favorites::class],
+    version = 3,
     exportSchema = false
 )
 abstract class VlocDatabase : RoomDatabase() {
@@ -16,6 +16,7 @@ abstract class VlocDatabase : RoomDatabase() {
     abstract fun vlocDao(): VLocDao
     abstract fun remoteKeysDao(): RemoteKeysDao
 
+    abstract fun favoritesDao(): FavoritesDao
     companion object {
         @Volatile
         private var INSTANCE: VlocDatabase? = null

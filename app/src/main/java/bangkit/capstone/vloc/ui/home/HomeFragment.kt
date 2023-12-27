@@ -1,7 +1,6 @@
 package bangkit.capstone.vloc.ui.home
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,7 +29,6 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 @Suppress("DEPRECATION")
 class HomeFragment : Fragment(){
@@ -69,35 +67,22 @@ class HomeFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.getSession().observe(viewLifecycleOwner) {
             if (!it.isLogin) {
-                binding?.toolbar?.inflateMenu(R.menu.login_menu)
-            } else {
-                binding?.toolbar?.inflateMenu(R.menu.logout_menu)
-            }
-        }
-
-        binding?.toolbar?.setOnMenuItemClickListener {
-            when(it.itemId){
-                R.id.login -> {
+                binding?.loginBtn?.setOnClickListener {
                     startActivity(Intent(requireActivity(), LoginActivity::class.java))
                 }
-                R.id.logout -> {
+            } else {
+                binding?.loginBtn?.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_logout))
+                binding?.loginBtn?.setOnClickListener {
                     viewModel.logout()
-                    requireActivity().invalidateOptionsMenu()
-                    startActivity(Intent(requireActivity(), WelcomeActivity::class.java))
+                    startActivity(Intent(requireActivity(), MainActivity::class.java))
                 }
             }
-            true
         }
 
     }
-
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.login_menu, menu)
-    }
-
 
     private fun showExitConfirmationDialog() {
         AlertDialog.Builder(requireContext())
@@ -134,15 +119,27 @@ class HomeFragment : Fragment(){
         }
 
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
-            val token = user.token
             val adapter = DestinationAdapter()
+            if (!user.isLogin) {
+                binding?.greetings?.text = getString(R.string.hi_user)
+            } else {
+                binding?.greetings?.text = getString(R.string.greetingformat, user.name )
+            }
             binding?.rvBanner?.adapter = adapter
-            viewModel.getAllDestination("Bearer $token")?.observe(viewLifecycleOwner) { response ->
+//            viewModel.getAllDestination(null)?.observe(viewLifecycleOwner) { response ->
+//                if (response != null) {
+//                    adapter.submitData(lifecycle, response)
+//                } else {
+//                    showSnackbar(getString(R.string.failed_message))
+//                }
+//            }
+            viewModel.response.observe(viewLifecycleOwner){response ->
                 if (response != null) {
-                    adapter.submitData(lifecycle, response)
+                    adapter.submitList(response)
                 } else {
                     showSnackbar(getString(R.string.failed_message))
                 }
+
             }
         }
 
@@ -157,34 +154,40 @@ class HomeFragment : Fragment(){
         category?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val item = adapterView?.getItemAtPosition(position)
-                if (item != null) {
-                    Toast.makeText(requireContext(), item.toString(), Toast.LENGTH_SHORT).show()
-                }
-                Toast.makeText(requireContext(), "Selected", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onNothingSelected(adapterView: AdapterView<*>?) {
-                // TODO Auto-generated method stub
-            }
-        }
-
-        viewModel.getSession().observe(viewLifecycleOwner) { user ->
-            requireActivity().invalidateOptionsMenu()
-            val token = user.token
-            val adapter = DestinationAdapter()
-            binding?.rvDestination?.adapter = adapter.withLoadStateFooter(
-                footer = LoadingAdapter {
-                    adapter.retry()
-                }
-            )
-            viewModel.getAllDestination("Bearer $token")?.observe(viewLifecycleOwner) { response ->
-                if (response != null) {
-                    adapter.submitData(lifecycle, response)
+                if (item != "all") {
+                    viewModel.getLocationByCategory(item.toString())
                 } else {
-                    showSnackbar(getString(R.string.failed_message))
+                    viewModel.getLocation()
+                }
+                if (item != null) {
+                    val adapter = DestinationAdapter()
+                    binding?.rvDestination?.adapter = adapter
+//                    binding?.rvDestination?.adapter = adapter.withLoadStateFooter(
+//                        footer = LoadingAdapter {
+//                            adapter.retry()
+//                        }
+//                    )
+//                    viewModel.getAllDestination(item.toString())?.observe(viewLifecycleOwner) { response ->
+//                        if (response != null) {
+//                            adapter.submitData(lifecycle, response)
+//                        } else {
+//                            showSnackbar(getString(R.string.failed_message))
+//                        }
+//                    }
+                    viewModel.response.observe(viewLifecycleOwner){response ->
+                        if (response != null) {
+                            adapter.submitList(response)
+                        } else {
+                            showSnackbar(getString(R.string.failed_message))
+                        }
+
+                    }
                 }
             }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) = Unit
         }
+
     }
 
 

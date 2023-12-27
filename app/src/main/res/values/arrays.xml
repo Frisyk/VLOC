@@ -16,4 +16,13 @@
         <item>@string/pref_dark_on</item>
         <item>@string/pref_dark_off</item>
     </string-array>
+    <!-- Language options -->
+    <string-array name="language_entries">
+        <item>Bahasa Indonesia</item>
+        <item>English</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>id</item>
+        <item>en</item>
+    </string-array>
 </resources>

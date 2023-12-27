@@ -38,11 +38,11 @@
 
     <string name="title_profile">Profile</string>
     <string name="welcome">welcome!</string>
-    <string name="favorites">Favorites</string>
-    <string name="all">All</string>
-    <string name="beach">Beach</string>
-    <string name="museum">Museum</string>
-    <string name="temple">Temple</string>
+    <string name="favorites">Favorites❤️</string>
+    <string name="all" translatable="false">all</string>
+    <string name="beach" translatable="false">beach</string>
+    <string name="museum" translatable="false">museum</string>
+    <string name="temple" translatable="false">temple</string>
     <string name="get_started">Let\'s Start!</string>
     <string name="theme">Theme</string>
     <string name="register_word_in_login">Don\'t have an account? Please, Register Now!</string>
@@ -52,12 +52,13 @@
     <string name="login_first">Login First!</string>
     <string name="rating">Rating</string>
     <string name="rating_score">%s⭐</string>
+    <string name="accuration">%s Persen</string>
     <string name="score">4,5⭐</string>
     <string name="open_time">Open Time</string>
     <string name="time">08.00 – 20.00 WIB</string>
     <string name="time_placeholder">%s WIB</string>
     <string name="htm">HTM</string>
-    <string name="htm_price">Rp %s ,00</string>
+    <string name="htm_price">Rp %s0</string>
     <string name="htm_nominal">Rp 20.000, 00</string>
     <string name="open_maps">Open Maps</string>
 
@@ -74,5 +75,14 @@
     <string name="no">No</string>
     <string name="guest">Guest</string>
     <string name="find_your_destination_here">Find Your Destination Here</string>
+    <string name="you_haven_t_login_yet">You Haven\'t Login Yet</string>
+    <string name="pref_language_title">Language</string>
+    <string name="pref_key_login" translatable="false" >key_login</string>
+    <string name="pref_key_logout" translatable="false">key_logout</string>
+    <string name="pref_key_language" translatable="false">key_language</string>
+    <string name="hi_user">Hi, User!</string>
+    <string name="greetingformat">Hi, %s !</string>
+    <string name="our_recommendation">Our Recommendation</string>
+    <string name="predict_message">You must login first :)</string>
 
 </resources>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:scrollbarSize="0dp"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -17,7 +18,19 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
+            android:theme="?attr/actionBarTheme">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:backgroundTint="@null"
+                android:layout_gravity="end"
+                android:padding="10dp"
+                android:id="@+id/setting_btn"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_settings"
+                android:contentDescription="@string/login" />
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,52 +39,48 @@
             android:gravity="center">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/img_profile"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
                 android:src="@drawable/ic_profile"
                 android:layout_marginTop="30dp"
                />
 
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_change"
+                android:layout_marginTop="-40dp"
+                android:padding="10dp"
+                android:layout_marginEnd="-80dp"
+                android:id="@+id/btn_change"/>
+
             <TextView
                 android:id="@+id/name_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GUEST"
+                android:text="@string/guest"
                 android:textStyle="bold"
                 android:textSize="20sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal">
+
 
             <TextView
                 android:id="@+id/favorite_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="20sp"
+                android:layout_height="0dp"
                 android:layout_weight="2"
                 android:text="@string/favorites"
                 android:layout_margin="20dp" />
 
-            <Spinner
-                android:id="@+id/categories_spinner"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:entries="@array/categories"
-                android:textAlignment="center" />
-        </LinearLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvDestination"
             android:layout_width="match_parent"
-            android:layout_height="800dp"
+            android:layout_height="500dp"
             android:layout_margin="8dp"
             android:overScrollMode="never"
             android:scrollbarSize="0dp"

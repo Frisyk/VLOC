@@ -7,15 +7,15 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import bangkit.capstone.vloc.data.local.database.RemoteKeys
 import bangkit.capstone.vloc.data.local.database.VlocDatabase
-import bangkit.capstone.vloc.data.model.ListDestinationItem
+import bangkit.capstone.vloc.data.model.LocationResponseItem
 import bangkit.capstone.vloc.data.remote.ApiService
 
 @OptIn(ExperimentalPagingApi::class)
 class VlocRemoteMediator(
     private val database: VlocDatabase,
     private val apiService: ApiService,
-    private val token: String
-) : RemoteMediator<Int, ListDestinationItem>() {
+    val category: String?
+) : RemoteMediator<Int, LocationResponseItem>() {
 
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH
@@ -23,7 +23,7 @@ class VlocRemoteMediator(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, ListDestinationItem>
+        state: PagingState<Int, LocationResponseItem>
     ): MediatorResult {
         val page = when (loadType) {
             LoadType.PREPEND -> {
@@ -45,8 +45,13 @@ class VlocRemoteMediator(
         }
 
         try {
-            val responseData = apiService.getStory( token, page, state.config.pageSize)
-            val endOfPaginationReached = responseData.listStory.isEmpty()
+            val responseData = if (category == null) {
+                apiService.getAllLocation(page, state.config.pageSize)
+            } else {
+                apiService.getLocationByCategory(category, page, state.config.pageSize)
+            }
+
+            val endOfPaginationReached = responseData.locationResponse.isEmpty()
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     database.remoteKeysDao().deleteRemoteKeys()
@@ -54,12 +59,12 @@ class VlocRemoteMediator(
                 }
                 val prevKey = if (page == 1) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
-                val keys = responseData.listStory.map {
+                val keys = responseData.locationResponse.map {
                     RemoteKeys(id = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
 
                 database.remoteKeysDao().insertAll(keys)
-                database.vlocDao().insertStory(responseData.listStory)
+                database.vlocDao().insertLocation(responseData.locationResponse)
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {
@@ -67,17 +72,17 @@ class VlocRemoteMediator(
         }
     }
 
-    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, ListDestinationItem>): RemoteKeys? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, LocationResponseItem>): RemoteKeys? {
         return state.pages.lastOrNull { it.data.isNotEmpty() }?.data?.lastOrNull()?.let { data ->
             database.remoteKeysDao().getRemoteKeysId(data.id)
         }
     }
-    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, ListDestinationItem>): RemoteKeys? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, LocationResponseItem>): RemoteKeys? {
         return state.pages.firstOrNull { it.data.isNotEmpty() }?.data?.firstOrNull()?.let { data ->
             database.remoteKeysDao().getRemoteKeysId(data.id)
         }
     }
-    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, ListDestinationItem>): RemoteKeys? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, LocationResponseItem>): RemoteKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { id ->
                 database.remoteKeysDao().getRemoteKeysId(id)
